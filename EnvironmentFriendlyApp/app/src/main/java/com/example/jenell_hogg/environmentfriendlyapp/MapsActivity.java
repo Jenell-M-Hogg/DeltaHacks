@@ -23,6 +23,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -61,7 +63,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
 
 
         // Acquire a reference to the system Location Manager
@@ -106,21 +107,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
+        List<String> providers = locationManager.getAllProviders();
+        for (int i = 0; i < providers.size(); i++) {
+            locationManager.requestLocationUpdates(providers.get(i), 0, 0, locationListener);
+            Location l = locationManager.getLastKnownLocation(providers.get(i));
+            if (l == null) {
+                return;
+            } else {
+                updateLocation(l);
+            }
 
-        Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(l== null){
-            return;
         }
-        else{
-            updateLocation(l);
-        }
-
-
-
 
     }
-
-
 }
