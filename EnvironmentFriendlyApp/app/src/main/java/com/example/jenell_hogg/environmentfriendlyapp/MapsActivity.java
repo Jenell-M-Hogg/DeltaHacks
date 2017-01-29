@@ -2,6 +2,8 @@ package com.example.jenell_hogg.environmentfriendlyapp;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,6 +22,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -109,16 +113,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         List<String> providers = locationManager.getAllProviders();
-        for (int i = 0; i < providers.size(); i++) {
-            locationManager.requestLocationUpdates(providers.get(i), 0, 0, locationListener);
-            Location l = locationManager.getLastKnownLocation(providers.get(i));
-            if (l == null) {
-                return;
-            } else {
-                updateLocation(l);
-            }
+//        for (int i = 0; i < providers.size(); i++) {
+//            locationManager.requestLocationUpdates(providers.get(i), 0, 0, locationListener);
+//            Location l = locationManager.getLastKnownLocation(providers.get(i));
+//            if (l == null) {
+//                return;
+//            } else {
+//                updateLocation(l);
+//            }
 
+//        }
+        for (int j = 1; j <= 3; j++) {
+            googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(10 * j * j/5, 10 - j))
+//                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon)))
+                    .title("Hello world")
+                    .alpha(40)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+            googleMap.addCircle(new CircleOptions()
+                    .center(new LatLng(1.4 * j * j, 14.1 / j))
+                    .radius(500000)
+                    .fillColor(Color.argb(128, 255/j, 50*j, 0))
+            );
         }
-
     }
 }
